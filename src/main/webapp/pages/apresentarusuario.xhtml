@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Açaí</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="../templates/templateadmin.xhtml">
+            <ui:define name="conteudo">
+                <p:growl id="gro" life="4000" />
+                <p:toolbar>
+                    <f:facet name="left"><h:outputText value="TELA USUARIO" /></f:facet>
+                </p:toolbar>
+                <p:separator />
+                <h:form id="formCadUsuario" >
+                    <p:commandButton value="Cadastrar" oncomplete="PF('widDialCadastroUsuario').show()"/>
+                    
+                    <p:separator />
+                    
+                    <p:dataTable id="tableUsuario" value="#{usuarioBean.listarAction()}"
+                                 var="item" rowKey="#{item.idUsuario}" paginator="true" rows="5" selectionMode="single">
+                        <p:column headerText="Código" width="20%" style="text-align: center;">
+                            #{item.idUsuario}
+                        </p:column>
+                        <p:column headerText="Nome">
+                            #{item.nome}
+                        </p:column>
+                        <p:column headerText="Operações" width="30%">
+                            <p:commandButton icon="ui-icon-search" oncomplete="PF('widDialVisualizaUsuario').show()" 
+                                             update=":formCadUsuario:dialVisualizaUsuario">
+                                <f:setPropertyActionListener value="#{item}" target="#{usuarioBean.selectedUsuario}"/>
+                            </p:commandButton>
+                            <p:commandButton icon="ui-icon-pencil" oncomplete="PF('widDialAlteraUsuario').show()"
+                                             update=":dialAlteraUsuario">
+                                <f:setPropertyActionListener value="#{item}" target="#{usuarioBean.selectedUsuario}"/>
+                            </p:commandButton>
+                            <p:commandButton icon="ui-icon-trash" action="#{usuarioBean.excluirUsuarioAction()}" update=":formCadUsuario :gro">
+                                <f:setPropertyActionListener value="#{item}" target="#{usuarioBean.selectedUsuario}"/>
+                                <p:confirm header="Atenção" message="Deseja realmente deletar o registro?" />
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+
+                     <p:dialog id="dialVisualizaUsuario" visible="false" modal="true" header="Usuario cadastrado"
+                              resizable="false" widgetVar="widDialVisualizaUsuario" appendTo="@(body)">
+                        <p:panelGrid columns="2">
+                            <h:outputText value="Código:"/>
+                            <h:outputText value="#{usuarioBean.selectedUsuario.idUsuario}"/>
+
+                            <h:outputText value="Nome:"/>
+                            <h:outputText value="#{usuarioBean.selectedUsuario.nome}"/>
+                            
+                            <h:outputText value="Login:"/>
+                            <h:outputText value="#{usuarioBean.selectedUsuario.login}"/>
+                        </p:panelGrid>
+                    </p:dialog>
+
+                </h:form>
+
+                <p:dialog id="dialCadastroUsuario" visible="false" modal="true" resizable="false"
+                          widgetVar="widDialCadastroUsuario" appendTo="@(body)">
+                    <h:form id="formDialUsuario">
+                        <p:panelGrid columns="3">
+                            <h:outputText value="Nome*:"/>
+                            <p:inputText id="txtNome" value="#{usuarioBean.cadastrarUsuario.nome}" required="true"
+                                         requiredMessage="Tá faltando preencher o campo nome!">
+                                <f:validateBean />
+                            </p:inputText>
+                            <p:message for="txtNome" />
+                            
+                            <h:outputText value="Login*:"/>
+                            <p:inputText id="txtLogin" value="#{usuarioBean.cadastrarUsuario.login}" required="true"
+                                         requiredMessage="Tá faltando preencher o campo login!">
+                                <f:validateBean />
+                            </p:inputText>
+                            <p:message for="txtLogin" />
+
+                            <h:outputText  value="Senha*:"/>
+                            <p:password id="txtSenha" value="#{usuarioBean.cadastrarUsuario.senha}" required="true"
+                                         requiredMessage="Tá faltando preencher o campo senha!">
+                                <f:validateBean />
+                            </p:password>
+                            <p:message for="txtSenha"/>
+                        </p:panelGrid>
+                        <p:commandButton value="Cadastrar" action="#{usuarioBean.adicionarUsuarioAction()}"
+                                         update=":formCadUsuario :gro" oncomplete="PF('widDialCadastroUsuario').hide()">
+                            <p:confirm header="Atenção" message="Deseja realmente cadastrar?" />
+                        </p:commandButton>
+                    </h:form>
+                </p:dialog>
+
+                <p:dialog id="dialAlteraUsuario" visible="false" modal="true" resizable="false"
+                          widgetVar="widDialAlteraUsuario" appendTo="@(body)">
+                    <h:form id="formDialAltera">
+                        <p:panelGrid columns="3">
+                            <h:outputText value="Nome*:"/>
+                            <p:inputText id="txtNome2" value="#{usuarioBean.selectedUsuario.nome}" required="true"
+                                         requiredMessage="Tá faltando preenche o campo nome!">
+                                <f:validateBean />
+                            </p:inputText>
+                            <p:message for="txtNome2" />
+                            
+                            <h:outputText value="Login*:"/>
+                            <p:inputText id="txtLogin2" value="#{usuarioBean.cadastrarUsuario.login}" required="true"
+                                         requiredMessage="Tá faltando preencher o campo login!">
+                                <f:validateBean />
+                            </p:inputText>
+                            <p:message for="txtLogin2" />
+
+                            <h:outputText  value="Senha*:"/>
+                            <p:password id="txtSenha2" value="#{usuarioBean.selectedUsuario.senha}" required="true"
+                                         requiredMessage="Tá faltando preenche o campo senha!">
+                                <f:validateBean />
+                            </p:password>>
+                            <p:message for="txtSenha2"/>
+                        </p:panelGrid>
+                        <p:commandButton value="Alterar" action="#{usuarioBean.alterarUsuarioAction()}"
+                                         update=":formCadUsuario :gro" oncomplete="PF('widDialAlteraUsuario').hide()">
+                            <p:confirm header="Atenção" message="Deseja realmente alterar?" />
+                        </p:commandButton>
+                    </h:form>
+                </p:dialog>
+
+                <p:confirmDialog  id="dialConfirm" global="true" widgetVar="widDialConfirma" >
+                    <h:form>
+                        <p:commandButton value="sim" styleClass="ui-confirmdialog-yes" type="button" icon="ui-icon-check"/>
+                        <p:commandButton value="não" styleClass="ui-confirmdialog-no" type="button" icon="ui-icon-close"/>
+                    </h:form>    
+                </p:confirmDialog>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

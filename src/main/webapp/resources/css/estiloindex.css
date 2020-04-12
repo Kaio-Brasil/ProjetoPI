@@ -1,0 +1,48 @@
+@charset "UTF-8";
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+div#conteudopagina {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 1200px;
+    margin-top: 30px;
+}
+
+div#ladoesquerdo {
+    height: 604px;
+    width: 350px;
+    background: #C882B6;
+    color: #FFFFFF;
+    float: left;
+    display: block;
+    justify-content: center;
+}
+
+div#topo {
+    background: #742B7D; 
+    width: 350px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+div#topologin {
+    display: block;
+    margin: 10px;
+    justify-content: flex-end;
+}
+
+div#telalogin {
+    display: block;
+    margin: 60px;
+}
+
+div#ladodireito {
+    float: right;
+    background: black;
+}

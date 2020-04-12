@@ -1,0 +1,160 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Açaí</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="../templates/template.xhtml">
+            <ui:define name="metadata">
+                <f:metadata>
+                    <f:event listener="#{pedidoBean.carregarProdutos()}" type="preRenderView" />
+                </f:metadata>
+            </ui:define>
+            <ui:define name="conteudo" >
+                <p:growl id="groMessage" life="4000"/>
+                
+                <h:form id="formPedido">
+                    <p:wizard>
+                        <p:tab id="fazerpedido" title="Realizar Pedidos">                            
+                            <p:dataTable id="tabelaPedido" var="item" value="#{pedidoBean.listaProdutos}" rowKey=""
+                                filteredValue="#{pedidoBean.listaProdutosFiltrados}" rows="4" paginator="true" selectionMode="single">
+
+                                <f:facet name="header">
+                                    LISTA DE PRODUTOS
+                                </f:facet>
+
+                                <p:column headerText="Código">
+                                    #{item.codigoProduto}
+                                </p:column>
+
+                                <p:column headerText="Descrição" filterBy="#{item.descricao}">
+                                    #{item.descricao}
+                                </p:column>
+
+                                <p:column headerText="Tipo" sortBy="#{item.tipo}" filterBy="#{item.tipo}">
+                                    #{item.tipo}
+                                </p:column>
+
+                                <p:column headerText="Valor Unitário">
+                                    #{item.preco}
+                                </p:column>
+
+                                <p:column headerText="Operações" width="20%">
+                                    <p:commandButton value="Adicionar" icon="ui-icon-plus"
+                                            actionListener="#{pedidoBean.carrinhoAction(item)}"
+                                            update=":formPedido:tabelaPedidoItens :formPedido:pedidoValor"/>
+                                </p:column>
+                            </p:dataTable>
+
+                            <p:separator />
+
+                            <p:dataTable id="tabelaPedidoItens" var="item" value="#{pedidoBean.listaItem}" rowKey=""
+                                rows="3" paginator="true" selectionMode="single">
+
+                                <f:facet name="header">
+                                    ADICIONANDO ITENS DO SEU PEDIDO
+                                </f:facet>
+
+                                <p:column headerText="Produto">
+                                    #{item.produto.descricao}
+                                </p:column>
+
+                                <p:column headerText="Quantidade">
+                                    #{item.quantidade}
+                                </p:column>
+
+                                <p:column headerText="Valor Parcial">
+                                    #{item.valor}
+                                </p:column>
+
+                                <p:column headerText="Operações" width="20%">
+                                    <p:commandButton value="Remover" actionListener="#{pedidoBean.remover(item)}"
+                                        update=":formPedido:tabelaPedidoItens :formPedido:pedidoValor" icon="ui-icon-close" />
+                                </p:column>
+                            </p:dataTable>
+                            <h:panelGrid columns="2">
+                                <h:outputText id="pedidoValor" value="Valor do pedido: #{pedidoBean.cadastrarPedido.total} + 
+                                              Frete: #{pedidoBean.freteSelecionado.valor} = #{pedidoBean.calcularValor()}"/>
+                            </h:panelGrid>
+                        </p:tab>
+                    
+                        <p:tab id="cadEndereco" title="Local da Entrega">
+                            <p:panel header="ENDEREÇO DA ENTREGA">
+                                <p:panelGrid columns="3">
+                                    <h:outputText  value="Rua:"/>
+                                    <p:inputText id="rua" value="#{pedidoBean.cadastrarPedido.enderecoEntrega.rua}" required="true"
+                                                 requiredMessage="Tá faltando preencher o campo rua!"/>
+                                    <p:message for="rua"/>
+
+                                    <h:outputText  value="Numero:"/>
+                                    <p:inputText id="numero" value="#{pedidoBean.cadastrarPedido.enderecoEntrega.numero}" required="true" 
+                                                 requiredMessage="Tá faltando preencher o campo numero!"/>
+                                    <p:message for="numero"/>
+
+                                    <h:outputText  value="Bairro:"/>
+                                    <p:inputText id="bairro" value="#{pedidoBean.cadastrarPedido.enderecoEntrega.bairro}" required="true"
+                                                 requiredMessage="Tá faltando preencher o campo bairro!"/>
+                                    <p:message for="bairro"/>
+                                    
+                                    <h:outputText  value="Referencia:"/>
+                                    <p:inputText id="referencia" value="#{pedidoBean.cadastrarPedido.enderecoEntrega.referencia}" required="true"
+                                                 requiredMessage="Tá faltando preencher o campo referencia!"/>
+                                    <p:message for="referencia"/>
+                                </p:panelGrid>
+                            </p:panel>
+                        </p:tab>
+                        <p:tab id="visualizarPedido" title="Visualizar">
+                            <p:panel header="Visualizar dados">
+                                <p:panelGrid columns="2">
+                                    <h:outputText value="Itens:"/>
+                                    <ui:repeat var="produtos" value="#{pedidoBean.listaItem}">
+                                        #{produtos.produto.descricao} &nbsp; #{produtos.quantidade}<br/>
+                                    </ui:repeat>
+                                    
+                                    <h:outputText value="Rua:"/>
+                                    <h:outputText value="#{pedidoBean.cadastrarPedido.enderecoEntrega.rua}"/>
+
+                                    <h:outputText value="Numero:"/>
+                                    <h:outputText value="#{pedidoBean.cadastrarPedido.enderecoEntrega.numero}"/>
+
+                                    <h:outputText value="Bairro:"/>
+                                    <h:outputText value="#{pedidoBean.cadastrarPedido.enderecoEntrega.bairro}"/>
+                                    
+                                    <h:outputText value="Referencia"/>
+                                    <h:outputText value="#{pedidoBean.cadastrarPedido.enderecoEntrega.referencia}"/>
+
+                                    <h:outputText value="Valor do frete:"/>
+                                    <h:outputText value="#{pedidoBean.cadastrarPedido.frete.valor}"/>
+
+                                    <h:outputText value="Valor dos itens:"/>
+                                    <h:outputText value="#{pedidoBean.cadastrarPedido.total}"/>
+
+                                    <h:outputText value="Total da compra:"/>
+                                    <h:outputText value="#{pedidoBean.calcularValor()}"/>
+                                </p:panelGrid>
+                                <p:commandButton value="Finalizar Pedido" action="#{pedidoBean.adicionarPedidoAction()}"
+                                            update=":formPedido :groMessage" >
+                                    <p:confirm header="Atenção" message="Deseja finalizar seu pedido?" />
+                                </p:commandButton>
+                            </p:panel>
+                        </p:tab>
+                    </p:wizard>
+                </h:form>
+                
+                <p:confirmDialog  id="dialConfirm" global="true" widgetVar="widDialConfirma" >
+                    <h:form>
+                        <p:commandButton value="sim" styleClass="ui-confirmdialog-yes" type="button" icon="ui-icon-check"/>
+                        <p:commandButton value="não" styleClass="ui-confirmdialog-no" type="button" icon="ui-icon-close"/>
+                    </h:form>    
+                </p:confirmDialog>
+              
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

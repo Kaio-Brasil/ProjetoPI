@@ -1,0 +1,17 @@
+@charset "UTF-8";
+
+div#conteudoprifrete {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+div#conteudoaltfrete {
+    max-width: 600px !important;
+}
+
+div#butoesfrete {
+    margin-top: 8px;
+    float: right;
+    justify-content: flex-end;
+}

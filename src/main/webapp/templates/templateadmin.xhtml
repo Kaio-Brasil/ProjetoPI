@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Açaí</title>
+        <h:outputStylesheet library="css" name="adminestilo.css" />
+        <h:outputStylesheet library="css" name="apresentarfrete.css" />
+    </h:head>
+    <h:body>
+        <p:layout fullPage="true">
+            <p:layoutUnit styleClass="cabecalho" position="north" size="120" resizable="true" closable="false" collapsible="false">
+                <p:graphicImage library="imagens" name="marca.png" style="margin-top: 15px; margin-left: 50px;"/>
+            </p:layoutUnit>
+            <p:layoutUnit styleClass="menu" position="west" size="200" header="Menu" resizable="true" closable="false" collapsible="true">
+                <h:form id="menu">
+                    <p:panelMenu>
+                        <p:submenu label="Arquivos">
+                            <p:menuitem value="Principal" outcome="principal.xhtml" />
+                            <p:menuitem value="Sair" action="#{autenticarBean.sair()}"/>
+                        </p:submenu>
+                        <p:submenu label="Cadastro">
+                            <p:menuitem value="Produto" outcome="apresentarprodutos.xhtml" />
+                            <p:menuitem value="Frete" outcome="apresentarfrete.xhtml" />
+                            <p:menuitem value="Usuario" outcome="apresentarusuario.xhtml" 
+                                        rendered="#{autenticarBean.usuarioLogin.login == 'admin'}"    />
+                        </p:submenu>
+                        <p:submenu label="Clientes">
+                            <p:menuitem value="Cliente" outcome="apresentarclientes.xhtml" />
+                        </p:submenu>
+                        <p:submenu label="Relatorio">
+                            <p:menuitem value="Pedido" outcome="apresentarpedido.xhtml" />
+                        </p:submenu>
+                    </p:panelMenu>
+                </h:form>
+            </p:layoutUnit>
+
+            <p:layoutUnit position="center">
+                <ui:insert name="conteudo" />
+            </p:layoutUnit>
+            <p:layoutUnit id="rodape" position="south" size="40" resizable="true" closable="false" collapsible="false">
+                Copyright &copy; Kaio
+            </p:layoutUnit>
+        </p:layout>
+    </h:body>
+</html>
+

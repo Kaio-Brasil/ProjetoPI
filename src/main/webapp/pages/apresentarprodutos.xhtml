@@ -1,0 +1,158 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Açaí</title>
+    </h:head>
+    <h:body>
+        
+        <ui:composition template="../templates/templateadmin.xhtml">
+            <ui:define name="conteudo">
+                <p:growl id="gro" life="4000" />
+                <p:toolbar>
+                    <f:facet name="left"><h:outputText value="TELA PRODUTO" /></f:facet>
+                </p:toolbar>
+                <p:separator />
+                <h:form id="formCadProduto" >
+                    <p:commandButton value="Cadastrar" oncomplete="PF('widDialCadastroProduto').show()"/>
+                    
+                    <p:separator />
+                    
+                    <p:dataTable id="tableProduto" value="#{produtoBean.listarAction()}"
+                                 var="item" rowKey="#{item.codigoProduto}" paginator="true" rows="10" selectionMode="single">
+                        <p:column headerText="Código" width="20%" style="text-align: center;">
+                            #{item.codigoProduto}
+                        </p:column>
+                        <p:column headerText="Descrição">
+                            #{item.descricao}
+                        </p:column>
+                        <p:column headerText="Status">
+                            #{item.statusProduto}
+                        </p:column>
+                        <p:column headerText="Operações" width="30%">
+                            <p:commandButton icon="ui-icon-search" oncomplete="PF('widDialVisualizaProduto').show()" 
+                                             update=":formCadProduto:dialVisualizaProduto">
+                                <f:setPropertyActionListener value="#{item}" target="#{produtoBean.selectedProduto}"/>
+                            </p:commandButton>
+                            <p:commandButton icon="ui-icon-pencil" oncomplete="PF('widDialAlteraProduto').show()"
+                                             update=":dialAlteraProduto">
+                                <f:setPropertyActionListener value="#{item}" target="#{produtoBean.selectedProduto}"/>
+                            </p:commandButton>
+                            <p:commandButton icon="ui-icon-trash" action="#{produtoBean.excluirProdutoAction()}" update=":formCadProduto :gro">
+                                <f:setPropertyActionListener value="#{item}" target="#{produtoBean.selectedProduto}"/>
+                                <p:confirm header="Atenção" message="Deseja realmente deletar o registro?" />
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+
+                     <p:dialog id="dialVisualizaProduto" visible="false" modal="true" header="Produto cadastrado"
+                              resizable="false" widgetVar="widDialVisualizaProduto" appendTo="@(body)">
+                        <p:panelGrid columns="2">
+                            <h:outputText value="Código:"/>
+                            <h:outputText value="#{produtoBean.selectedProduto.codigoProduto}"/>
+
+                            <h:outputText value="Descrição:"/>
+                            <h:outputText value="#{produtoBean.selectedProduto.descricao}"/>
+                            
+                            <h:outputText value="Tipo:"/>
+                            <h:outputText value="#{produtoBean.selectedProduto.tipo}"/>
+                            
+                            <h:outputText value="Preço:"/>
+                            <h:outputText value="#{produtoBean.selectedProduto.preco}"/>
+                            
+                            <h:outputText value="Status:"/>
+                            <h:outputText value="#{produtoBean.selectedProduto.statusProduto}"/>
+                        </p:panelGrid>
+                    </p:dialog>
+
+                </h:form>
+
+                <p:dialog id="dialCadastroProduto" visible="false" modal="true" resizable="false"
+                          widgetVar="widDialCadastroProduto" appendTo="@(body)">
+                    <h:form id="formDialProduto">
+                        <p:panelGrid columns="3">
+                            <h:outputText value="Descrição*:"/>
+                            <p:inputText id="txtDescricao" value="#{produtoBean.cadastroProduto.descricao}" required="true"
+                                         requiredMessage="Tá faltando preencher o campo descrição!">
+                                <f:validateBean />
+                            </p:inputText>
+                            <p:message for="txtDescricao" />
+                    
+                            <h:outputText value="Preço*:"/>
+                            <p:inputNumber id="nPreco" value="#{produtoBean.cadastroProduto.preco}" required="true"
+                                           requiredMessage="Tá faltando preencher o campo preço!">
+                                <f:validateBean />
+                            </p:inputNumber>
+                            <p:message for="nPreco"/>
+                            
+                            <h:outputText  value="Tipo*:"/>
+                            <p:inputText id="txtTipo" value="#{produtoBean.cadastroProduto.tipo}" required="true"
+                                         requiredMessage="Tá faltando preencher o campo tipo!">
+                                <f:validateBean />
+                            </p:inputText>
+                            <p:message for="txtTipo"/>
+                            
+                            <h:outputText value="Status"/>
+                            <p:inputText id="txtStatus" value="#{produtoBean.cadastroProduto.statusProduto}" required="true"
+                                           requiredMessage="Tá faltando preencher o campo status!"/>
+                            <p:message for="txtStatus"/>
+                        </p:panelGrid>
+                        <p:commandButton value="Cadastrar" action="#{produtoBean.adicionarProdutoAction()}"
+                                         update=":formCadProduto :gro" oncomplete="PF('widDialCadastroProduto').hide()">
+                            <p:confirm header="Atenção" message="Deseja realmente cadastrar?" />
+                        </p:commandButton>
+                    </h:form>
+                </p:dialog>
+
+                <p:dialog id="dialAlteraProduto" visible="false" modal="true" resizable="false"
+                          widgetVar="widDialAlteraProduto" appendTo="@(body)">
+                    <h:form id="formDialAltera">
+                        <p:panelGrid columns="3">
+                            <h:outputText value="Descrição*:"/>
+                            <p:inputText id="txtDescricao2" value="#{produtoBean.selectedProduto.descricao}" required="true"
+                                         requiredMessage="Tá faltando preenche o campo descrição!">
+                                <f:validateBean />
+                            </p:inputText>
+                            <p:message for="txtDescricao2" />
+                            
+                            <h:outputText value="Preco*:"/>
+                            <p:inputNumber id="nPreco2" value="#{produtoBean.selectedProduto.preco}" required="true"
+                                           requiredMessage="Tá faltando preenche o campo preço!">
+                                <f:validateBean />
+                            </p:inputNumber>
+                            <p:message for="nPreco2"/>
+
+                            <h:outputText  value="Tipo*:"/>
+                            <p:inputText id="txtTipo2" value="#{produtoBean.selectedProduto.tipo}" required="true"
+                                         requiredMessage="Tá faltando preenche o campo tipo!">
+                                <f:validateBean />
+                            </p:inputText>
+                            <p:message for="txtTipo2"/>
+                            
+                            <h:outputText value="Status*:"/>
+                            <p:inputText id="txtStatus2" value="#{produtoBean.selectedProduto.statusProduto}" required="true"
+                                           requiredMessage="Tá faltando preenche o campo status"/>
+                            <p:message for="txtStatus2"/>
+                        </p:panelGrid>
+                        <p:commandButton value="Alterar" action="#{produtoBean.alterarProdutoAction()}"
+                                         update=":formCadProduto :gro" oncomplete="PF('widDialAlteraProduto').hide()">
+                            <p:confirm header="Atenção" message="Deseja realmente alterar?" />
+                        </p:commandButton>
+                    </h:form>
+                </p:dialog>
+
+                <p:confirmDialog  id="dialConfirm" global="true" widgetVar="widDialConfirma" >
+                    <h:form>
+                        <p:commandButton value="sim" styleClass="ui-confirmdialog-yes" type="button" icon="ui-icon-check"/>
+                        <p:commandButton value="não" styleClass="ui-confirmdialog-no" type="button" icon="ui-icon-close"/>
+                    </h:form>    
+                </p:confirmDialog>
+            </ui:define>
+        </ui:composition>
+        
+    </h:body>
+</html>

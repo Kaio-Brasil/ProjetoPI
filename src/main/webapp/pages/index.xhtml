@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Açaí</title>
+        <h:outputStylesheet library="css" name="estiloindex.css" />
+    </h:head>
+    <h:body>
+        
+        <p:growl id="gro" life="4000" />
+        
+        <div id="conteudopagina">
+            <div id="ladoesquerdo">
+                <div id="topo" >
+                    <div id="opcao">
+                        <h:form id="loginAdm" style="margin-right: 150px; margin-top: 6px;">            
+                            <h:outputLink value="javascript:void(0)" onclick="PF('dialLoginAdmin').show();" title="Login de Administrador">
+                                <p:graphicImage library="imagens" name="menu.png" />
+                            </h:outputLink>
+
+                            <p:growl id="groLogin" life="3000" />
+
+                            <p:dialog header="Login de Administrador" visible="false" widgetVar="dialLoginAdmin" resizable="false">
+                                <h:panelGrid columns="2" cellpadding="5">
+                                    <h:outputLabel for="username" value="Usuário:" />
+                                    <p:inputText id="username" value="#{autenticarBean.usuarioLogin.login}" required="true" label="nome" />
+
+                                    <h:outputLabel for="password" value="Senha:" />
+                                    <p:password id="password" value="#{autenticarBean.usuarioLogin.senha}" required="true" label="senha" />
+
+                                    <f:facet name="footer">
+                                        <p:commandButton value="Login" update="groLogin" action="#{autenticarBean.entrarAdmin()}" />
+                                    </f:facet>  
+                                </h:panelGrid>
+                            </p:dialog>
+                        </h:form>
+                    </div>
+                    <div id="topologin" >
+                        <h:form >
+                            <p:commandLink value="Fazer cadastro" action="cadastrarcliente.xhtml?faces-redirect=true" style="color: #FFFFFF; text-decoration: none; margin: 10px;" />
+                        </h:form>
+                    </div>
+                </div>
+                <div id="telalogin">
+                    <h:form id="login">
+                        <h:panelGrid id="loginpanel" columns="1">
+                            <p:graphicImage library="imagens" name="login.png" style="margin-bottom: 20px;"/>
+                            <p:outputLabel value="User" style="color: #FFFFFF;"/>
+                            <p:inputText id="email" value="#{autenticarBean.clienteLogin.email}"/>
+                            <p:outputLabel value="Password" style="color: #FFFFFF;"/>
+                            <p:password id="senha" value="#{autenticarBean.clienteLogin.senha}"/>
+                            <p:commandButton value="Enter" action="#{autenticarBean.entrar()}" update=":login:loginpanel"/>
+                        </h:panelGrid>
+                    </h:form>
+                </div>
+            </div>
+            <div id="ladodireito">
+                <p:graphicImage library="imagens" name="tela.png" />
+            </div>
+        </div>
+    </h:body>
+</html>
+
