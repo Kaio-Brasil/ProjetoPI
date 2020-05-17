@@ -18,13 +18,19 @@
                 <h:form id="formCliente" >
                     <p:dataTable id="tableCliente" value="#{clienteBean.listarAction()}"
                                  var="item" rowKey="#{item.idCliente}" paginator="true" rows="5" selectionMode="single">
-                        <p:column headerText="Código" width="20%" style="text-align: center;">
+                        <p:column headerText="Código" width="10%" style="text-align: center;">
                             #{item.idCliente}
                         </p:column>
                         <p:column headerText="Nome" filterBy="#{item.nome}">
                             #{item.nome}
                         </p:column>
-                        <p:column headerText="Telefone">
+                        <p:column headerText="Data de Nascimento" style="text-align: center;">
+                            #{item.dataNasc}
+                        </p:column>
+                        <p:column headerText="CPF" style="text-align: center;">
+                            #{item.cpf}
+                        </p:column>
+                        <p:column headerText="Telefone" style="text-align: center;">
                             #{item.telefone}
                         </p:column>
                         <p:column headerText="Email">

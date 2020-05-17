@@ -5,11 +5,11 @@ import com.acai.model.regradenegocio.FreteRN;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class FreteBean {
     private FreteRN freteRN = null;
     private Frete selectedFrete;

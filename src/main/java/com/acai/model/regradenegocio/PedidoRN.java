@@ -1,5 +1,6 @@
 package com.acai.model.regradenegocio;
 
+import com.acai.model.entidade.Cliente;
 import com.acai.model.entidadedao.PedidoDAO;
 import com.acai.model.entidade.Pedido;
 import com.acai.model.entidadehibernatedao.PedidoHibernateDAO;
@@ -34,6 +35,10 @@ public class PedidoRN {
     
     public List<Pedido> buscarTodos() {
         return this.pedidoDAO.buscarTodos();
+    }
+    
+    public List<Pedido> buscarPedidoPorCliente(Cliente cliente) {
+        return this.pedidoDAO.buscarPedidoPorCliente(cliente);
     }
     
 }

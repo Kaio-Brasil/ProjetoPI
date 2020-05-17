@@ -17,6 +17,7 @@
                 </p:toolbar>
                 <p:separator />
                 <h:form id="formCadUsuario" >
+                    <h:outputLabel value="Cadastrar novo usuario: " />
                     <p:commandButton value="Cadastrar" oncomplete="PF('widDialCadastroUsuario').show()"/>
                     
                     <p:separator />
@@ -29,23 +30,23 @@
                         <p:column headerText="Nome">
                             #{item.nome}
                         </p:column>
-                        <p:column headerText="Operações" width="30%">
-                            <p:commandButton icon="ui-icon-search" oncomplete="PF('widDialVisualizaUsuario').show()" 
+                        <p:column headerText="Operações" width="35%" style="text-align: center;">
+                            <p:commandButton icon="ui-icon-search" value="Visializar" oncomplete="PF('widDialVisualizaUsuario').show()" 
                                              update=":formCadUsuario:dialVisualizaUsuario">
                                 <f:setPropertyActionListener value="#{item}" target="#{usuarioBean.selectedUsuario}"/>
                             </p:commandButton>
-                            <p:commandButton icon="ui-icon-pencil" oncomplete="PF('widDialAlteraUsuario').show()"
+                            <p:commandButton icon="ui-icon-pencil" value="Alterar" oncomplete="PF('widDialAlteraUsuario').show()"
                                              update=":dialAlteraUsuario">
                                 <f:setPropertyActionListener value="#{item}" target="#{usuarioBean.selectedUsuario}"/>
                             </p:commandButton>
-                            <p:commandButton icon="ui-icon-trash" action="#{usuarioBean.excluirUsuarioAction()}" update=":formCadUsuario :gro">
+                            <p:commandButton icon="ui-icon-trash" value="Deletar" action="#{usuarioBean.excluirUsuarioAction()}" update=":formCadUsuario :gro">
                                 <f:setPropertyActionListener value="#{item}" target="#{usuarioBean.selectedUsuario}"/>
                                 <p:confirm header="Atenção" message="Deseja realmente deletar o registro?" />
                             </p:commandButton>
                         </p:column>
                     </p:dataTable>
 
-                     <p:dialog id="dialVisualizaUsuario" visible="false" modal="true" header="Usuario cadastrado"
+                    <p:dialog id="dialVisualizaUsuario" visible="false" modal="true" header="Usuario Cadastrado"
                               resizable="false" widgetVar="widDialVisualizaUsuario" appendTo="@(body)">
                         <p:panelGrid columns="2">
                             <h:outputText value="Código:"/>
@@ -58,10 +59,9 @@
                             <h:outputText value="#{usuarioBean.selectedUsuario.login}"/>
                         </p:panelGrid>
                     </p:dialog>
-
                 </h:form>
 
-                <p:dialog id="dialCadastroUsuario" visible="false" modal="true" resizable="false"
+                <p:dialog id="dialCadastroUsuario" header="Cadastrar Usuario" visible="false" modal="true" resizable="false"
                           widgetVar="widDialCadastroUsuario" appendTo="@(body)">
                     <h:form id="formDialUsuario">
                         <p:panelGrid columns="3">
@@ -93,7 +93,7 @@
                     </h:form>
                 </p:dialog>
 
-                <p:dialog id="dialAlteraUsuario" visible="false" modal="true" resizable="false"
+                <p:dialog id="dialAlteraUsuario" header="Alterar Usuario" visible="false" modal="true" resizable="false"
                           widgetVar="widDialAlteraUsuario" appendTo="@(body)">
                     <h:form id="formDialAltera">
                         <p:panelGrid columns="3">
@@ -104,8 +104,8 @@
                             </p:inputText>
                             <p:message for="txtNome2" />
                             
-                            <h:outputText value="Login*:"/>
-                            <p:inputText id="txtLogin2" value="#{usuarioBean.cadastrarUsuario.login}" required="true"
+                            <h:outputText value="Login*:" />
+                            <p:inputText id="txtLogin2" value="#{usuarioBean.selectedUsuario.login}" required="true"
                                          requiredMessage="Tá faltando preencher o campo login!">
                                 <f:validateBean />
                             </p:inputText>
@@ -115,7 +115,7 @@
                             <p:password id="txtSenha2" value="#{usuarioBean.selectedUsuario.senha}" required="true"
                                          requiredMessage="Tá faltando preenche o campo senha!">
                                 <f:validateBean />
-                            </p:password>>
+                            </p:password>
                             <p:message for="txtSenha2"/>
                         </p:panelGrid>
                         <p:commandButton value="Alterar" action="#{usuarioBean.alterarUsuarioAction()}"

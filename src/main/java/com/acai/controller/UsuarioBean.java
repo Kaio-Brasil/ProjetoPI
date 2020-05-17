@@ -5,12 +5,12 @@ import com.acai.model.regradenegocio.UsuarioRN;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import org.apache.commons.codec.digest.DigestUtils;
 
 @ManagedBean
-@SessionScoped
+@ViewScoped
 public class UsuarioBean {
     private UsuarioRN usuarioRN = null;
     private Usuario selectedUsuario;

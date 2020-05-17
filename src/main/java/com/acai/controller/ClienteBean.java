@@ -4,10 +4,13 @@ import com.acai.model.regradenegocio.ClienteRN;
 import com.acai.model.entidade.Cliente;
 import java.io.Serializable;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import org.apache.commons.codec.digest.DigestUtils;
 
 @ManagedBean
@@ -16,11 +19,17 @@ public class ClienteBean implements Serializable {
     private ClienteRN clienteRN = null;
     private Cliente selectedCliente;
     private Cliente cadastrarCliente;
+    
+    @PostConstruct
+    public void init() {
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        HttpSession session = (HttpSession) externalContext.getSession(true);
+        selectedCliente = (Cliente) session.getAttribute("clienteLogado");
+    }
 
     public ClienteBean() {
         this.clienteRN = new ClienteRN(ClienteRN.HIBERNATE_CLIENTE_DAO);
         this.cadastrarCliente = new Cliente();
-        this.selectedCliente = (Cliente) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("clienteLogado");
     }
     
     public void adicionarClienteAction() {

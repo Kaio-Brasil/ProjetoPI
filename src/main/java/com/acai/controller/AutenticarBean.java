@@ -11,12 +11,17 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import org.apache.commons.codec.digest.DigestUtils;
 
+/**
+*
+* @author kaio
+*/
+
 @ManagedBean
 @SessionScoped
 public class AutenticarBean implements Serializable {
     private Cliente clienteLogin;
     private Usuario usuarioLogin;
-
+    
     public Cliente getClienteLogin() {
         if(clienteLogin == null) {
             clienteLogin = new Cliente();
@@ -45,7 +50,7 @@ public class AutenticarBean implements Serializable {
 
         if(clienteLogin != null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Você esta Logado!"));
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("clienteLogado", this.clienteLogin);
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("clienteLogado", clienteLogin);
             return "comofazer.xhtml?faces-redirect=true";
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cliente não encontrado!", "Erro ao fazer login!"));

@@ -20,67 +20,79 @@
                 
                 <h:form id="formPedido">
                     <p:wizard>
-                        <p:tab id="fazerpedido" title="Realizar Pedidos">                            
+                        <p:tab id="fazerpedido" title="Realizar Pedidos" titleStyle="">                            
                             <p:dataTable id="tabelaPedido" var="item" value="#{pedidoBean.listaProdutos}" rowKey=""
-                                filteredValue="#{pedidoBean.listaProdutosFiltrados}" rows="4" paginator="true" selectionMode="single">
+                                filteredValue="#{pedidoBean.listaProdutosFiltrados}" rows="5" paginator="true" selectionMode="single">
 
                                 <f:facet name="header">
                                     LISTA DE PRODUTOS
                                 </f:facet>
 
-                                <p:column headerText="Código">
+                                <p:column headerText="Código" width="10%" style="text-align: center;">
                                     #{item.codigoProduto}
                                 </p:column>
 
-                                <p:column headerText="Descrição" filterBy="#{item.descricao}">
+                                <p:column headerText="Descrição" filterBy="#{item.descricao}" width="30%">
                                     #{item.descricao}
                                 </p:column>
 
-                                <p:column headerText="Tipo" sortBy="#{item.tipo}" filterBy="#{item.tipo}">
+                                <p:column headerText="Tipo" sortBy="#{item.tipo}" style="text-align: center;">
                                     #{item.tipo}
                                 </p:column>
 
-                                <p:column headerText="Valor Unitário">
-                                    #{item.preco}
+                                <p:column headerText="Valor Unitário" style="text-align: center;">
+                                   R$ #{item.preco}
                                 </p:column>
 
-                                <p:column headerText="Operações" width="20%">
+                                <p:column headerText="Operações" width="20%" style="text-align: center;">
                                     <p:commandButton value="Adicionar" icon="ui-icon-plus"
-                                            actionListener="#{pedidoBean.carrinhoAction(item)}"
-                                            update=":formPedido:tabelaPedidoItens :formPedido:pedidoValor"/>
+                                            actionListener="#{pedidoBean.carrinhoAction(item)}" process="@all"
+                                            update=":formPedido "/>
                                 </p:column>
                             </p:dataTable>
 
-                            <p:separator />
+                            <p:separator style="margin: 20px 0 20px;" />
 
                             <p:dataTable id="tabelaPedidoItens" var="item" value="#{pedidoBean.listaItem}" rowKey=""
-                                rows="3" paginator="true" selectionMode="single">
+                                rows="5" paginator="true" selectionMode="single">
 
                                 <f:facet name="header">
-                                    ADICIONANDO ITENS DO SEU PEDIDO
+                                    ADICIONANDO ITEM AO PEDIDO
                                 </f:facet>
 
                                 <p:column headerText="Produto">
                                     #{item.produto.descricao}
                                 </p:column>
 
-                                <p:column headerText="Quantidade">
+                                <p:column headerText="Quantidade" style="text-align: center;">
                                     #{item.quantidade}
                                 </p:column>
 
-                                <p:column headerText="Valor Parcial">
-                                    #{item.valor}
+                                <p:column headerText="Valor Parcial" style="text-align: center;">
+                                    R$#{item.valor}
                                 </p:column>
 
                                 <p:column headerText="Operações" width="20%">
-                                    <p:commandButton value="Remover" actionListener="#{pedidoBean.remover(item)}"
-                                        update=":formPedido:tabelaPedidoItens :formPedido:pedidoValor" icon="ui-icon-close" />
+                                    <p:commandButton value="Remover" actionListener="#{pedidoBean.remover(item)}" process="@all"
+                                        update=":formPedido" icon="ui-icon-close" />
                                 </p:column>
                             </p:dataTable>
-                            <h:panelGrid columns="2">
-                                <h:outputText id="pedidoValor" value="Valor do pedido: #{pedidoBean.cadastrarPedido.total} + 
-                                              Frete: #{pedidoBean.freteSelecionado.valor} = #{pedidoBean.calcularValor()}"/>
+                            
+                            <h4 style="text-align: center; margin: 25px 0 0 0; color: #000;">VISUALIZAR VALORES DA COMPRA</h4>
+                            <p:separator style="margin-bottom: 10px;" />
+                            
+                            <h:panelGrid columns="7" style="display: flex; justify-content: center;">
+                                <h:outputLabel value="Valor da entrega: " style="font-weight: bold; font-size: 14pt;" />
+                                <h:outputText id="pedidoFrete" value="R$#{pedidoBean.freteSelecionado.valor}" 
+                                              style="font-size: 12pt;  margin-right: 30px" />
+                                <h:outputLabel value="Subtotal: " style="font-weight: bold; font-size: 14pt;" />
+                                <h:outputText id="pedidoValor" value="R$#{pedidoBean.cadastrarPedido.total}" 
+                                              style="font-size: 12pt; margin-right: 30px" /> 
+                                <h:outputLabel value="Total: " style="font-weight: bold; font-size: 14pt;" />
+                                <h:outputText id="pedidoFinal" value="R$#{pedidoBean.calcularValor()}" style="font-size: 12pt;" />
                             </h:panelGrid>
+                            
+                            <p:separator />
                         </p:tab>
                     
                         <p:tab id="cadEndereco" title="Local da Entrega">
@@ -129,16 +141,17 @@
                                     <h:outputText value="#{pedidoBean.cadastrarPedido.enderecoEntrega.referencia}"/>
 
                                     <h:outputText value="Valor do frete:"/>
-                                    <h:outputText value="#{pedidoBean.cadastrarPedido.frete.valor}"/>
+                                    <h:outputText value="R$ #{pedidoBean.cadastrarPedido.frete.valor}"/>
 
                                     <h:outputText value="Valor dos itens:"/>
-                                    <h:outputText value="#{pedidoBean.cadastrarPedido.total}"/>
+                                    <h:outputText value="R$ #{pedidoBean.cadastrarPedido.total}"/>
 
                                     <h:outputText value="Total da compra:"/>
-                                    <h:outputText value="#{pedidoBean.calcularValor()}"/>
+                                    <h:outputText value="R$ #{pedidoBean.calcularValor()}"/>
                                 </p:panelGrid>
+                                <p:commandButton value="Cancelar" action="#{pedidoBean.cancelarPedido()}" style="margin: 5px;" />
                                 <p:commandButton value="Finalizar Pedido" action="#{pedidoBean.adicionarPedidoAction()}"
-                                            update=":formPedido :groMessage" >
+                                            update=":formPedido :groMessage" style="margin-top: 5px;" >
                                     <p:confirm header="Atenção" message="Deseja finalizar seu pedido?" />
                                 </p:commandButton>
                             </p:panel>

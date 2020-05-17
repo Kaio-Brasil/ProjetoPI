@@ -21,6 +21,11 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 
+/**
+ * 
+ * @author kaio
+ */
+
 @ManagedBean
 @ViewScoped
 public class PedidoBean implements Serializable {
@@ -36,7 +41,7 @@ public class PedidoBean implements Serializable {
         this.pedidoRN = new PedidoRN(PedidoRN.HIBERNATE_PEDIDO_DAO);
     }
       
-    public void adicionarPedidoAction() {
+    public String adicionarPedidoAction() {
         Cliente cliente = (Cliente) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("clienteLogado");
         
         new EntregaRN(EntregaRN.HIBERNATE_ENTREGA_DAO).salvarEntrega(this.cadastrarPedido.getEnderecoEntrega());
@@ -56,6 +61,8 @@ public class PedidoBean implements Serializable {
         this.cadastrarPedido.setTotal(new BigDecimal("0.00"));
         this.listaItem = new ArrayList<>();
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Pedido cadastrado com sucesso!"));
+        
+        return "comofazer.xhtml?faces-redirect=true";
     }    
     
     public Pedido buscarPedidoAction(Integer codigo) {
@@ -78,6 +85,13 @@ public class PedidoBean implements Serializable {
     
     public List<Pedido> listarActionRevesa() {
         List lista = listarAction();
+        Collections.reverse(lista);
+        return lista;
+    }
+    
+    public List<Pedido> listarActionPedidoCliente() {
+        Cliente cliente = (Cliente) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("clienteLogado");
+        List<Pedido>lista = this.pedidoRN.buscarPedidoPorCliente(cliente);
         Collections.reverse(lista);
         return lista;
     }
@@ -169,7 +183,7 @@ public class PedidoBean implements Serializable {
             listaItem.add(item);
         } else {
             ItemPedido item = listaItem.get(posicao);
-            item.setQuantidade(item.getQuantidade()+1);
+            item.setQuantidade(item.getQuantidade() + 1);
             item.setValor(item.getProduto().getPreco().multiply(new BigDecimal(item.getQuantidade())));
             this.listaItem.set(posicao, item);
         }
@@ -177,6 +191,7 @@ public class PedidoBean implements Serializable {
         cadastrarPedido.setTotal(cadastrarPedido.getTotal().add(produto.getPreco()));
         cadastrarPedido.setFrete(freteSelecionado);
         cadastrarPedido.setDataHora(new Date());
+        
     }
     
     public void remover(ItemPedido item) {
@@ -192,6 +207,7 @@ public class PedidoBean implements Serializable {
             listaItem.remove(posicao);
             cadastrarPedido.setTotal(cadastrarPedido.getTotal().subtract(item.getValor()));
         }
+
     }
     
     public BigDecimal calcularValor() {
@@ -209,6 +225,11 @@ public class PedidoBean implements Serializable {
             }
         }
         return apresentar;
+    }
+    
+    public String cancelarPedido() {
+        this.cadastrarPedido = null;
+        return "comofazer.xhtml?faces-redirect=true";
     }
     
 }

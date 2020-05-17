@@ -1,0 +1,30 @@
+@charset "UTF-8";
+
+.ui-widget, .ui-widget.ui-widget {
+    font-size: 100% !important;
+}
+
+div#conteudo-cad {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+div#conteudo-cad-1 {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.cad-panel-grid tr, .cad-panel-grid td {
+    border: none !important;
+}
+
+.btn-cad, .btn-voltar {
+    padding: 5px !important;
+}
+
+.btn-voltar {
+    margin-left: 10px;
+}

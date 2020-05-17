@@ -20,19 +20,22 @@
                                         
                     <p:dataTable id="tableFrete" value="#{pedidoBean.listarActionRevesa()}"
                                  var="item" rowKey="#{item.codigoPedido}" paginator="true" rows="5" selectionMode="single">
-                        <p:column headerText="Código" width="20%" style="text-align: center;">
+                        <p:column headerText="Código" width="10%" style="text-align: center;">
                             #{item.codigoPedido}
                         </p:column>
-                        <p:column headerText="Hora" sortBy="true">
+                        <p:column headerText="Data/Hora" sortBy="true" style="text-align: center;">
                                 #{item.dataHora}
                         </p:column>
                         <p:column headerText="Nome do Cliente" filterBy="true">
                             #{item.cliente.nome}
                         </p:column>
+                        <p:column headerText="Telefone do Cliente" style="text-align: center;">
+                            #{item.cliente.telefone}
+                        </p:column>
                         <p:column headerText="Valor">
                             R$ #{item.total}
                         </p:column>
-                        <p:column headerText="Operações" width="30%">
+                        <p:column headerText="Operações" width="25%">
                             <p:commandButton icon="ui-icon-search" value="Visualizar" oncomplete="PF('widDialVisualizaPedido').show()" 
                                              update=":formCadPedido:dialVisualizaPedido">
                                 <f:setPropertyActionListener value="#{item}" target="#{pedidoBean.selectedPedido}"/>
@@ -46,11 +49,14 @@
                             <h:outputText value="Código:"/>
                             <h:outputText value="#{pedidoBean.selectedPedido.codigoPedido}"/>
 
-                            <h:outputText value="Hora:"/>
+                            <h:outputText value="Data/Hora:"/>
                             <h:outputText value="#{pedidoBean.selectedPedido.dataHora}"/>
                             
                             <h:outputText value="Nome do Cliente:"/>
                             <h:outputText value="#{pedidoBean.selectedPedido.cliente.nome}"/>
+                            
+                            <h:outputText value="Telefone do Cliente:"/>
+                            <h:outputText value="#{pedidoBean.selectedPedido.cliente.telefone}"/>
                             
                             <h:outputText value="Itens:"/>
                             <ui:repeat var="item" value="#{pedidoBean.buscarProduto(pedidoBean.selectedPedido.codigoPedido)}">
@@ -69,14 +75,14 @@
                             <h:outputText value="Referencia:"/>
                             <h:outputText value="#{pedidoBean.selectedPedido.enderecoEntrega.referencia}"/>
                             
-                            <h:outputText value="Valor:"/>
-                            <h:outputText value="#{pedidoBean.selectedPedido.total}"/>
-                            
                             <h:outputText value="Taxa da Entrega:"/>
-                            <h:outputText value="#{pedidoBean.selectedPedido.frete.valor}"/>
+                            <h:outputText value="R$#{pedidoBean.selectedPedido.frete.valor}"/>
+                            
+                            <h:outputText value="Subtotal:"/>
+                            <h:outputText value="R$#{pedidoBean.selectedPedido.total}"/>
                             
                             <h:outputText value="Total:"/>
-                            <h:outputText value="#{pedidoBean.selectedPedido.total + pedidoBean.selectedPedido.frete.valor}"/>
+                            <h:outputText value="R$#{pedidoBean.selectedPedido.total + pedidoBean.selectedPedido.frete.valor}"/>
                         </p:panelGrid>
                     </p:dialog>
 

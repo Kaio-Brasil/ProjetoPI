@@ -1,0 +1,47 @@
+@charset "utf-8";
+
+body {
+    background: #D3D3D3;
+}
+
+div {
+    margin-bottom: 4px; 
+}
+
+div#principal, div#panelbuscar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+div#telaexibicao {
+    max-width: 1000px;
+}
+
+div#telaexibicaousuario {
+    max-width: 600px;
+}
+
+div#panelbuscar {
+    float: right;
+    justify-content: flex-end;
+}
+
+.ui-widget, .ui-widget.ui-widget {
+    font-size: 95% !important;
+}
+
+.cabecalho .ui-layout-unit-content {
+    border-style: none;
+    background: linear-gradient(#742B7D, #C882B6) !important;
+}
+
+#rodape .ui-layout-unit-content {
+    margin: 2px;
+    padding: 2px;
+    text-align: center;
+    font-family: verdana, sans-serif;
+    color: #FFFFFF;
+    border: none !important;
+    background: linear-gradient(#DDA0DD, #800080) !important;
+}

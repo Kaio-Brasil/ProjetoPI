@@ -17,9 +17,9 @@
                 </p:toolbar>
                 <p:separator />
                 <h:form id="formCadFrete" >
+                    <h:outputLabel value="Cadastrar frete: " rendered="#{freteBean.listarAction().size() == 0}" />
                     <p:commandButton value="Cadastrar" rendered="#{freteBean.listarAction().size() == 0}" oncomplete="PF('widDialCadastroFrete').show()"/>
-                    
-                    <p:separator />
+                    <p:separator rendered="#{freteBean.listarAction().size() == 0}" />
                     
                     <p:dataTable id="tableFrete" value="#{freteBean.listarAction()}"
                                  var="item" rowKey="#{item.codigoFrete}" paginator="true" rows="5" selectionMode="single">
@@ -27,9 +27,9 @@
                             #{item.codigoFrete}
                         </p:column>
                         <p:column headerText="Valor">
-                            #{item.valor}
+                           R$ #{item.valor}
                         </p:column>
-                        <p:column headerText="Operações" width="30%">
+                        <p:column headerText="Operações" width="35%" style="text-align: center;">
                             <p:commandButton icon="ui-icon-search" value="Visualizar" oncomplete="PF('widDialVisualizaFrete').show()" 
                                              update=":formCadFrete:dialVisualizaFrete">
                                 <f:setPropertyActionListener value="#{item}" target="#{freteBean.selectedFrete}"/>
@@ -41,7 +41,7 @@
                         </p:column>
                     </p:dataTable>
 
-                     <p:dialog id="dialVisualizaFrete" visible="false" modal="true" header="Frete cadastrado"
+                     <p:dialog id="dialVisualizaFrete" visible="false" modal="true" header="Frete Cadastrado"
                               resizable="false" widgetVar="widDialVisualizaFrete" appendTo="@(body)">
                         <p:panelGrid columns="2">
                             <h:outputText value="Código:"/>
@@ -54,16 +54,16 @@
 
                 </h:form>
 
-                <p:dialog id="dialCadastroFrete" visible="false" modal="true" resizable="false"
+                <p:dialog id="dialCadastroFrete" header="Cadastrar Frete" visible="false" modal="true" resizable="false"
                           widgetVar="widDialCadastroFrete" appendTo="@(body)">
                     <h:form id="formDialFrete">
                         <p:panelGrid columns="3">
                             <h:outputText value="Valor*:"/>
-                            <p:inputText id="txtNome" value="#{freteBean.cadastrarFrete.valor}" required="true"
+                            <p:inputNumber id="txtValor" value="#{freteBean.cadastrarFrete.valor}" required="true"
                                          requiredMessage="Tá faltando preencher o campo valor!">
                                 <f:validateBean />
-                            </p:inputText>
-                            <p:message for="txtNome" />
+                            </p:inputNumber>>
+                            <p:message for="txtValor" />
                         </p:panelGrid>
                         <p:commandButton value="Cadastrar" action="#{freteBean.adicionarFreteAction()}"
                                          update=":formCadFrete :gro" oncomplete="PF('widDialCadastroFrete').hide()">
@@ -72,7 +72,7 @@
                     </h:form>
                 </p:dialog>
 
-                <p:dialog id="dialAlteraFrete" visible="false" modal="true" resizable="false"
+                <p:dialog id="dialAlteraFrete" header="Alterar Frete" visible="false" modal="true" resizable="false"
                           widgetVar="widDialAlteraFrete" appendTo="@(body)">
                     <h:form id="formDialAltera">
                         <p:panelGrid columns="3">

@@ -6,17 +6,18 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Açaí</title>
-        <h:outputStylesheet library="css" name="estiloindex.css" />
+        <h:outputStylesheet library="css" name="index.css" />
     </h:head>
     <h:body>
-        
-        <p:growl id="gro" life="4000" />
+        <h:form id="message-login">
+            <p:growl id="gro" life="3000" />
+        </h:form>
         
         <div id="conteudopagina">
             <div id="ladoesquerdo">
                 <div id="topo" >
-                    <div id="opcao">
-                        <h:form id="loginAdm" style="margin-right: 150px; margin-top: 6px;">            
+                    <div id="opcao"  style="margin: 5px 10px 0 0;">
+                        <h:form id="loginAdm">            
                             <h:outputLink value="javascript:void(0)" onclick="PF('dialLoginAdmin').show();" title="Login de Administrador">
                                 <p:graphicImage library="imagens" name="menu.png" />
                             </h:outputLink>
@@ -32,28 +33,28 @@
                                     <p:password id="password" value="#{autenticarBean.usuarioLogin.senha}" required="true" label="senha" />
 
                                     <f:facet name="footer">
-                                        <p:commandButton value="Login" update="groLogin" action="#{autenticarBean.entrarAdmin()}" />
+                                        <p:commandButton value="Login Admin" update=":loginAdm:groLogin" action="#{autenticarBean.entrarAdmin()}" />
                                     </f:facet>  
                                 </h:panelGrid>
                             </p:dialog>
                         </h:form>
                     </div>
-                    <div id="topologin" >
-                        <h:form >
-                            <p:commandLink value="Fazer cadastro" action="cadastrarcliente.xhtml?faces-redirect=true" style="color: #FFFFFF; text-decoration: none; margin: 10px;" />
-                        </h:form>
-                    </div>
                 </div>
                 <div id="telalogin">
-                    <h:form id="login">
-                        <h:panelGrid id="loginpanel" columns="1">
-                            <p:graphicImage library="imagens" name="login.png" style="margin-bottom: 20px;"/>
+                    <h:form id="formLoginUsuario" >
+                        <h:panelGrid id="login-panel" columns="1">
+                            <p:graphicImage library="imagens" name="login.png" style="margin-bottom: 20px;" />
                             <p:outputLabel value="User" style="color: #FFFFFF;"/>
-                            <p:inputText id="email" value="#{autenticarBean.clienteLogin.email}"/>
-                            <p:outputLabel value="Password" style="color: #FFFFFF;"/>
-                            <p:password id="senha" value="#{autenticarBean.clienteLogin.senha}"/>
-                            <p:commandButton value="Enter" action="#{autenticarBean.entrar()}" update=":login:loginpanel"/>
+                            <p:inputText id="email" value="#{autenticarBean.clienteLogin.email}" />
+                            <p:outputLabel value="Password" style="color: #FFFFFF;" />
+                            <p:password id="senha" value="#{autenticarBean.clienteLogin.senha}" />
+                            <p:commandButton value="Login" action="#{autenticarBean.entrar()}" update=":formLoginUsuario:login-panel" 
+                                             style="width: 95%; border-radius: 20px;" />
                         </h:panelGrid>
+                    </h:form>
+                    <h:form>
+                        <h:outputLabel value="Não possui cadastro? " styleClass="lbl-cadastroclin" />
+                        <p:commandLink value="Criar uma conta" action="cadastrarcliente.xhtml?faces-redirect=true" styleClass="link-cadastroclin" />
                     </h:form>
                 </div>
             </div>

@@ -12,66 +12,51 @@
         
         <ui:composition template="../templates/templateadmin.xhtml">
             <ui:define name="conteudo">
-                <p:growl id="gro" life="4000" />
+                <h:form id="formMessage">
+                    <p:growl id="gro" life="4000" />
+                </h:form>
                 <p:toolbar>
                     <f:facet name="left"><h:outputText value="TELA PRODUTO" /></f:facet>
                 </p:toolbar>
                 <p:separator />
                 <h:form id="formCadProduto" >
+                    <h:outputLabel value="Cadastrar novo produto: " />
                     <p:commandButton value="Cadastrar" oncomplete="PF('widDialCadastroProduto').show()"/>
                     
                     <p:separator />
                     
                     <p:dataTable id="tableProduto" value="#{produtoBean.listarAction()}"
                                  var="item" rowKey="#{item.codigoProduto}" paginator="true" rows="10" selectionMode="single">
-                        <p:column headerText="Código" width="20%" style="text-align: center;">
+                        <p:column headerText="Código" width="8%" style="text-align: center;">
                             #{item.codigoProduto}
                         </p:column>
                         <p:column headerText="Descrição">
                             #{item.descricao}
                         </p:column>
-                        <p:column headerText="Status">
+                        <p:column headerText="Preço" width="14%" style="text-align: center">
+                           R$ #{item.preco}
+                        </p:column>
+                        <p:column headerText="Tipo" width="14%" style="text-align: center">
+                            #{item.tipo}
+                        </p:column>
+                        <p:column headerText="Status" width="14%" style="text-align: center">
                             #{item.statusProduto}
                         </p:column>
-                        <p:column headerText="Operações" width="30%">
-                            <p:commandButton icon="ui-icon-search" oncomplete="PF('widDialVisualizaProduto').show()" 
-                                             update=":formCadProduto:dialVisualizaProduto">
-                                <f:setPropertyActionListener value="#{item}" target="#{produtoBean.selectedProduto}"/>
-                            </p:commandButton>
-                            <p:commandButton icon="ui-icon-pencil" oncomplete="PF('widDialAlteraProduto').show()"
+                        <p:column headerText="Operações" style="text-align: center;">
+                            <p:commandButton icon="ui-icon-pencil" value="Alterar" oncomplete="PF('widDialAlteraProduto').show()"
                                              update=":dialAlteraProduto">
                                 <f:setPropertyActionListener value="#{item}" target="#{produtoBean.selectedProduto}"/>
                             </p:commandButton>
-                            <p:commandButton icon="ui-icon-trash" action="#{produtoBean.excluirProdutoAction()}" update=":formCadProduto :gro">
+                            <p:commandButton icon="ui-icon-trash" value="Deletar" action="#{produtoBean.excluirProdutoAction()}" 
+                                             update=":formCadProduto:tableProduto :formMessage:gro">
                                 <f:setPropertyActionListener value="#{item}" target="#{produtoBean.selectedProduto}"/>
                                 <p:confirm header="Atenção" message="Deseja realmente deletar o registro?" />
                             </p:commandButton>
                         </p:column>
                     </p:dataTable>
-
-                     <p:dialog id="dialVisualizaProduto" visible="false" modal="true" header="Produto cadastrado"
-                              resizable="false" widgetVar="widDialVisualizaProduto" appendTo="@(body)">
-                        <p:panelGrid columns="2">
-                            <h:outputText value="Código:"/>
-                            <h:outputText value="#{produtoBean.selectedProduto.codigoProduto}"/>
-
-                            <h:outputText value="Descrição:"/>
-                            <h:outputText value="#{produtoBean.selectedProduto.descricao}"/>
-                            
-                            <h:outputText value="Tipo:"/>
-                            <h:outputText value="#{produtoBean.selectedProduto.tipo}"/>
-                            
-                            <h:outputText value="Preço:"/>
-                            <h:outputText value="#{produtoBean.selectedProduto.preco}"/>
-                            
-                            <h:outputText value="Status:"/>
-                            <h:outputText value="#{produtoBean.selectedProduto.statusProduto}"/>
-                        </p:panelGrid>
-                    </p:dialog>
-
                 </h:form>
 
-                <p:dialog id="dialCadastroProduto" visible="false" modal="true" resizable="false"
+                <p:dialog id="dialCadastroProduto" header="Cadastrar Produto" visible="false" modal="true" resizable="false"
                           widgetVar="widDialCadastroProduto" appendTo="@(body)">
                     <h:form id="formDialProduto">
                         <p:panelGrid columns="3">
@@ -97,18 +82,18 @@
                             <p:message for="txtTipo"/>
                             
                             <h:outputText value="Status"/>
-                            <p:inputText id="txtStatus" value="#{produtoBean.cadastroProduto.statusProduto}" required="true"
-                                           requiredMessage="Tá faltando preencher o campo status!"/>
+                            <p:inputSwitch id="txtStatus" value="#{produtoBean.cadastroProduto.statusProduto}" required="true"
+                                         requiredMessage="Tá faltando preencher o campo status!" />
                             <p:message for="txtStatus"/>
                         </p:panelGrid>
                         <p:commandButton value="Cadastrar" action="#{produtoBean.adicionarProdutoAction()}"
-                                         update=":formCadProduto :gro" oncomplete="PF('widDialCadastroProduto').hide()">
+                                         update=":formCadProduto:tableProduto :formMessage:gro" oncomplete="PF('widDialCadastroProduto').hide()">
                             <p:confirm header="Atenção" message="Deseja realmente cadastrar?" />
                         </p:commandButton>
                     </h:form>
                 </p:dialog>
 
-                <p:dialog id="dialAlteraProduto" visible="false" modal="true" resizable="false"
+                <p:dialog id="dialAlteraProduto" header="Alterar Produto" visible="false" modal="true" resizable="false"
                           widgetVar="widDialAlteraProduto" appendTo="@(body)">
                     <h:form id="formDialAltera">
                         <p:panelGrid columns="3">
@@ -134,12 +119,12 @@
                             <p:message for="txtTipo2"/>
                             
                             <h:outputText value="Status*:"/>
-                            <p:inputText id="txtStatus2" value="#{produtoBean.selectedProduto.statusProduto}" required="true"
+                            <p:inputSwitch id="txtStatus2" value="#{produtoBean.selectedProduto.statusProduto}" required="true"
                                            requiredMessage="Tá faltando preenche o campo status"/>
                             <p:message for="txtStatus2"/>
                         </p:panelGrid>
                         <p:commandButton value="Alterar" action="#{produtoBean.alterarProdutoAction()}"
-                                         update=":formCadProduto :gro" oncomplete="PF('widDialAlteraProduto').hide()">
+                                         update=":formCadProduto:tableProduto :formMessage:gro" oncomplete="PF('widDialAlteraProduto').hide()">
                             <p:confirm header="Atenção" message="Deseja realmente alterar?" />
                         </p:commandButton>
                     </h:form>

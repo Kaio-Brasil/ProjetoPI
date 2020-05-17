@@ -6,7 +6,8 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Açai</title>
-        <h:outputStylesheet library="css" name="adminestilo.css" />
+        <h:outputStylesheet library="css" name="estilo-page.css" />
+        <h:outputStylesheet library="css" name="cadastro-cliente.css" />
     </h:head>
     <h:body>
         <p:layout fullPage="true">
@@ -14,54 +15,68 @@
                 <p:graphicImage library="imagens" name="marca.png" style="margin-top: 15px; margin-left: 50px;"/>
             </p:layoutUnit>
              <p:layoutUnit position="center" size="200">
-                <p:growl id="gro" life="4000" />
-                
-                <p:panel header="TELA DE CADASTRO">
-                    <h:form id="formCadCliente">
-                        <p:panelGrid columns="3">
-                            <h:outputText value="Nome:"/>
-                            <p:inputText id="txtNome" value="#{clienteBean.cadastrarCliente.nome}" required="true" 
-                                         requiredMessage="Tá faltando preencher o campo nome!">
-                                <f:validateBean />
-                            </p:inputText>
-                            <p:message for="txtNome" />
+                <h:form id="formMessageCad">
+                    <p:growl id="gro" life="4000" />
+                </h:form>
+                 
+                <div id="conteudo-cad">
+                    <div id="conteudo-cad-1">
+                        <p:panel header="TELA DE CADASTRO" style="padding: 5px 50px;">
+                            <h:form id="formCadCliente">
+                                <p:panelGrid columns="3" styleClass="cad-panel-grid">
+                                    <h:outputText value="Nome:"/>
+                                    <p:inputText id="txtNome" value="#{clienteBean.cadastrarCliente.nome}" required="true" 
+                                                 requiredMessage="Tá faltando preencher o campo nome!">
+                                        <f:validateBean />
+                                    </p:inputText>
+                                    <p:message for="txtNome" />
+                                    
+                                    <h:outputText  value="Data de Nascimento:"/>
+                                    <p:calendar id="data-nasc" value="#{clienteBean.cadastrarCliente.dataNasc}" pattern="dd-MM-yyyy" mask="true"
+                                                 required="true" requiredMessage="Tá faltando preencher o campo data de nascimento!"/>
+                                    <p:message for="data-nasc"/>
+                                    
+                                    <h:outputText  value="CPF:"/>
+                                    <p:inputMask id="cpf" value="#{clienteBean.cadastrarCliente.cpf}" mask="999.999.999-99"
+                                                 required="true" requiredMessage="Tá faltando preencher o campo cpf!"/>
+                                    <p:message for="cpf"/>
 
-                            <h:outputText  value="Telefone:"/>
-                            <p:inputMask id="telefone" value="#{clienteBean.cadastrarCliente.telefone}" mask="(99)99999-9999"
-                                         required="true" requiredMessage="Tá faltando preencher o campo telefone!"/>
-                            <p:message for="telefone"/>
+                                    <h:outputText  value="Telefone:"/>
+                                    <p:inputMask id="telefone" value="#{clienteBean.cadastrarCliente.telefone}" mask="(99)99999-9999"
+                                                 required="true" requiredMessage="Tá faltando preencher o campo telefone!"/>
+                                    <p:message for="telefone"/>
 
-                            <h:outputText value="Email:"/>
-                            <p:inputText id="email" value="#{clienteBean.cadastrarCliente.email}" required="true"
-                                         requiredMessage="Tá faltando preencher o campo email!">
-                                <f:validateBean />
-                            </p:inputText>
-                            <p:message for="email"/>
+                                    <h:outputText value="Email:"/>
+                                    <p:inputText id="email" value="#{clienteBean.cadastrarCliente.email}" required="true"
+                                                 requiredMessage="Tá faltando preencher o campo email!">
+                                        <f:validateBean />
+                                    </p:inputText>
+                                    <p:message for="email"/>
 
-                            <h:outputText value="Senha:"/>
-                            <p:password id="senha" feedback="true" value="#{clienteBean.cadastrarCliente.senha}" required="true"
-                                        requiredMessage="Tá faltando preencher o campo senha!" >
-                                <f:validateBean />
-                            </p:password>
-                            <p:message for="senha"/>
+                                    <h:outputText value="Senha:"/>
+                                    <p:password id="senha" feedback="true" value="#{clienteBean.cadastrarCliente.senha}" required="true"
+                                                requiredMessage="Tá faltando preencher o campo senha!" >
+                                        <f:validateBean />
+                                    </p:password>
+                                    <p:message for="senha"/>
+                                </p:panelGrid>
+                                <br/>
+                                <p:commandButton styleClass="btn-cad" value="Cadastrar" action="#{clienteBean.adicionarClienteAction()}"
+                                                 update=":formCadCliente :formMessageCad:gro" >
+                                    <p:confirm header="Atenção" message="Deseja realmente cadastrar?" />
+                                </p:commandButton>
+                                <p:button styleClass="btn-voltar" value="Voltar" outcome="index.xhtml?faces-redirect=true" />
+                            </h:form>
+                        </p:panel>
 
-
-                        </p:panelGrid>
-                        <br/>
-                        <p:commandButton value="Cadastrar" action="#{clienteBean.adicionarClienteAction()}"
-                                         update=":formCadCliente :gro" >
-                            <p:confirm header="Atenção" message="Deseja realmente cadastrar?" />
-                        </p:commandButton>
-                        <p:commandButton value="Voltar" actionListener="index.xhtml?faces-redirect=true" />
-                    </h:form>
-                </p:panel>
-                
-                <p:confirmDialog  id="dialConfirm" global="true" widgetVar="widDialConfirma" >
-                    <h:form>
-                        <p:commandButton value="sim" styleClass="ui-confirmdialog-yes" type="button" icon="ui-icon-check"/>
-                        <p:commandButton value="não" styleClass="ui-confirmdialog-no" type="button" icon="ui-icon-close"/>
-                    </h:form>    
-                </p:confirmDialog>
+                        <p:confirmDialog  id="dialConfirm" global="true" widgetVar="widDialConfirma" >
+                            <h:form>
+                                <p:commandButton value="sim" styleClass="ui-confirmdialog-yes" type="button" icon="ui-icon-check"/>
+                                <p:commandButton value="não" styleClass="ui-confirmdialog-no" type="button" icon="ui-icon-close"/>
+                            </h:form>    
+                        </p:confirmDialog>
+                    </div>
+                </div>
                 
             </p:layoutUnit>    
             <p:layoutUnit id="rodape" position="south" size="40" resizable="true" closable="false" collapsible="false">

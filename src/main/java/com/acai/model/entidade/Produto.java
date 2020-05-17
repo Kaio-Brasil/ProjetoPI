@@ -47,7 +47,7 @@ public class Produto implements Serializable {
     }
 
     @NotEmpty(message = "O campo descrição é obrigatório")
-    @Size(min = 5, max = 45, message = "Tamanha de caractere pada o campo é 5 a 45")
+    @Size(min = 3, max = 45, message = "Tamanha de caractere pada o campo é 5 a 45")
     @Column(length = 45, nullable = false)
     public String getDescricao() {
         return this.descricao;
@@ -109,6 +109,12 @@ public class Produto implements Serializable {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Produto{" + "codigoProduto=" + codigoProduto + ", descricao=" + descricao + 
+                ", preco=" + preco + ", statusProduto=" + statusProduto + ", tipo=" + tipo + '}';
     }
     
 }

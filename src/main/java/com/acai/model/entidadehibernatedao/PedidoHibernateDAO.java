@@ -1,5 +1,6 @@
 package com.acai.model.entidadehibernatedao;
 
+import com.acai.model.entidade.Cliente;
 import com.acai.model.entidadedao.PedidoDAO;
 import com.acai.model.entidade.Pedido;
 import com.acai.util.HibernateUtil;
@@ -119,6 +120,22 @@ public class PedidoHibernateDAO implements PedidoDAO<Pedido> {
             session.close();
         }
         return codigo;
+    }
+    
+    @Override
+    public List<Pedido> buscarPedidoPorCliente(Cliente cliente) {
+        Session session = this.sessionFactory.openSession();
+        List<Pedido> pedidos = null;
+        try {
+            Query consulta = session.createQuery("SELECT pedido FROM Pedido pedido WHERE pedido.cliente = :cliente");
+            consulta.setEntity("cliente", cliente);
+            pedidos = consulta.list();
+        } catch(RuntimeException ex) {
+            throw ex;
+        } finally {
+            session.close();
+        }
+        return pedidos;
     }
     
 }

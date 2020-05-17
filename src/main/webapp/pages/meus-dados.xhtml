@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Açaí</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="../templates/template.xhtml">
+            <ui:define name="conteudo">
+                <p:growl id="gro" life="4000" />
+                <p:toolbar>
+                    <f:facet name="left"><h:outputText value="TELA ALTERAR DADOS CLIENTE" /></f:facet>
+                </p:toolbar>
+                
+                <p:separator />
+                
+                <h:form id="formDialAltera">
+                        <p:panelGrid columns="3">
+                            <h:outputText value="Nome:"/>
+                            <p:inputText id="txtNome" value="#{clienteBean.selectedCliente.nome}" required="true"
+                                         requiredMessage="Tá faltando preencher o campo nome!"/>
+                            <p:message for="txtNome" />
+                            
+                            <h:outputText  value="Data de Nascimento:"/>
+                            <p:calendar id="data-nasc" value="#{clienteBean.selectedCliente.dataNasc}" pattern="dd-MM-yyyy" mask="true"                                    
+                                         required="true" requiredMessage="Tá faltando preencher o campo data de nascimento!"/>
+                            <p:message for="data-nasc"/>
+                            
+                            <h:outputText value="CPF:"/>
+                            <p:inputMask id="txtCpf" value="#{clienteBean.selectedCliente.cpf}" mask="999.999.999-99"
+                                         required="true" requiredMessage="Tá faltando preencher o campo cpf!"/>
+                            <p:message for="txtCpf" />
+                            
+                            <h:outputText value="Telefone:"/>
+                            <p:inputMask id="txtTelefone" value="#{clienteBean.selectedCliente.telefone}" mask="(99)99999-9999"
+                                         required="true" requiredMessage="Tá faltando preencher o campo telefone!"/>
+                            <p:message for="txtTelefone" />
+
+                            <h:outputText value="Email:"/>
+                            <p:inputText id="email" value="#{clienteBean.selectedCliente.email}" required="true"
+                                         requiredMessage="Tá faltando preencher o campo email!"/>
+                            <p:message for="email"/>
+
+                            <h:outputText value="Senha:"/>
+                            <p:password id="senha" feedback="true" value="#{clienteBean.selectedCliente.senha}" required="true"
+                                        requiredMessage="Tá faltando preencher o campo senha!" />
+                            <p:message for="senha"/>
+                        </p:panelGrid>
+                        <p:commandButton value="Alterar" action="#{clienteBean.alterarClienteAction()}" style="margin-top: 5px;"
+                                         update=":formDialAltera :gro" >
+                            <p:confirm header="Atenção" message="Deseja realmente alterar?" />
+                        </p:commandButton>
+                    </h:form>
+
+                <p:confirmDialog  id="dialConfirm" global="true" widgetVar="widDialConfirma" >
+                    <h:form>
+                        <p:commandButton value="sim" styleClass="ui-confirmdialog-yes" type="button" icon="ui-icon-check"/>
+                        <p:commandButton value="não" styleClass="ui-confirmdialog-no" type="button" icon="ui-icon-close"/>
+                    </h:form>
+                </p:confirmDialog>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

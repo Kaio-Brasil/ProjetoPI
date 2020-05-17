@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Açaí</title>
+    </h:head>
+    <h:body>
+         <ui:composition template="../templates/template.xhtml">
+            <ui:define name="conteudo">
+                <p:growl id="gro" life="4000" />
+                <p:toolbar>
+                    <f:facet name="left"><h:outputText value="MEUS PEDIDO" /></f:facet>
+                </p:toolbar>
+                <p:separator />
+                <h:form id="formCadMeusPedido" >
+                                        
+                    <p:dataTable id="tableMeusPedido" value="#{pedidoBean.listarActionPedidoCliente()}"
+                                 var="item" rowKey="#{item.codigoPedido}" paginator="true" rows="5" selectionMode="single">
+                        <p:column headerText="Código" width="8%" style="text-align: center;">
+                            #{item.codigoPedido}
+                        </p:column>
+                        <p:column headerText="Dia/Horario" sortBy="true" style="text-align: center;">
+                                #{item.dataHora}
+                        </p:column>
+                        <p:column headerText="Itens" width="20%">
+                            <ui:repeat var="item" value="#{pedidoBean.buscarProduto(item.codigoPedido)}">
+                                #{item.produto.descricao} &nbsp; #{item.quantidade}<br/>
+                            </ui:repeat>
+                        </p:column>
+                        <p:column headerText="Valor" style="text-align: center;">
+                            R$ #{item.total}
+                        </p:column>
+                        <p:column headerText="Valor da entrega" style="text-align: center;">
+                            R$ #{item.frete.valor}
+                        </p:column>
+                        <p:column headerText="Total" style="text-align: center;">
+                            R$ #{item.frete.valor + item.total}
+                        </p:column>
+                        <p:column headerText="Endereço de entrega" style="text-align: center;">
+                            <p:commandButton icon="ui-icon-search" value="Visualizar" oncomplete="PF('widDialVisualizaMeusPedido').show()" 
+                                             update=":formCadMeusPedido:dialVisualizaMeusPedido"  style="padding: 10px; font-size: 10pt;">
+                                <f:setPropertyActionListener value="#{item}" target="#{pedidoBean.selectedPedido}"/>
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+
+                     <p:dialog id="dialVisualizaMeusPedido" visible="false" modal="true" header="Endereço"
+                              resizable="false" widgetVar="widDialVisualizaMeusPedido" appendTo="@(body)">
+                        <p:panelGrid columns="2">
+                            <h:outputText value="Rua:"/>
+                            <h:outputText value="#{pedidoBean.selectedPedido.enderecoEntrega.rua}"/>
+                            
+                            <h:outputText value="Numero:"/>
+                            <h:outputText value="#{pedidoBean.selectedPedido.enderecoEntrega.numero}"/>
+                            
+                            <h:outputText value="Bairro:"/>
+                            <h:outputText value="#{pedidoBean.selectedPedido.enderecoEntrega.bairro}"/>
+                            
+                            <h:outputText value="Referencia:"/>
+                            <h:outputText value="#{pedidoBean.selectedPedido.enderecoEntrega.referencia}"/>
+                        </p:panelGrid>
+                    </p:dialog>
+
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
