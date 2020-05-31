@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Objects;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -20,8 +18,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@ManagedBean
-@RequestScoped
 public class Pedido implements Serializable {
     private Integer codigoPedido;
     private Date dataHora;

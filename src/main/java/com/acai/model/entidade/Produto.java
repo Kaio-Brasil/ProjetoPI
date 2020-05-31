@@ -3,8 +3,6 @@ package com.acai.model.entidade;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,8 +15,6 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
-@ManagedBean(name = "produto")
-@RequestScoped
 public class Produto implements Serializable {
     private Integer codigoProduto;
     private String descricao;

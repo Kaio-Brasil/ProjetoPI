@@ -52,7 +52,6 @@ public class FreteHibernateDAO implements FreteDAO<Frete> {
 
     @Override
     public void alterar(Frete frete) {
-        this.sessionFactory.getCurrentSession().close();
         Session session = this.sessionFactory.openSession();
         Transaction transacao = null;
         try {
@@ -65,6 +64,7 @@ public class FreteHibernateDAO implements FreteDAO<Frete> {
             }
             throw ex;
         } finally {
+            this.sessionFactory.getCurrentSession().close();
             session.close();
         }
     }

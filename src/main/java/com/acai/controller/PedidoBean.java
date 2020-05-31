@@ -161,7 +161,7 @@ public class PedidoBean implements Serializable {
     
     public void carregarProdutos() {
         ProdutoRN produtoRN = new ProdutoRN(ProdutoRN.HIBERNATE_PRODUTO_DAO);
-        this.listaProdutos = produtoRN.buscarTodos();
+        this.listaProdutos = produtoRN.listarProdutoDisponivel();
         FreteRN freteRN = new FreteRN(FreteRN.HIBERNATE_FRETE_DAO);
         this.freteSelecionado = freteRN.buscarFrete(1);
     }

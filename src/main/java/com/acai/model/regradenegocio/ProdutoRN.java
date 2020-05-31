@@ -35,5 +35,9 @@ public class ProdutoRN {
     public List<Produto> buscarTodos() {
         return this.produtoDAO.buscarTodos();
     }
+    
+    public List<Produto> listarProdutoDisponivel() {
+        return this.produtoDAO.listarProdutoDisponivel();
+    }
 
 }

@@ -8,13 +8,12 @@ div#conteudo-cad {
     margin-top: 50px;
     display: flex;
     justify-content: center;
-    align-content: center;
 }
 
 div#conteudo-cad-1 {
     display: flex;
     justify-content: center;
-    align-content: center;
+    flex-direction: column;
 }
 
 .cad-panel-grid tr, .cad-panel-grid td {

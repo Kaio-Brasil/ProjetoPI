@@ -53,14 +53,11 @@ public class ProdutoHibernateDAO implements ProdutoDAO<Produto> {
     
     @Override
     public void alterar(Produto produto) {
-        this.sessionFactory.getCurrentSession().close();
         Session session = this.sessionFactory.openSession();
         Transaction transacao = null;
         try {
             transacao = session.beginTransaction();
-            Produto alterarProduto = buscar(produto.getCodigoProduto());
-            alterarProduto.setDescricao(produto.getDescricao());
-            session.update(alterarProduto);
+            session.update(produto);
             transacao.commit();
         } catch(Exception ex) {
             if(transacao != null) {
@@ -96,6 +93,22 @@ public class ProdutoHibernateDAO implements ProdutoDAO<Produto> {
         List<Produto> produtos = null;
         try {
             Query consulta = session.createQuery("SELECT produto FROM Produto produto");
+            produtos = consulta.list();
+        } catch(RuntimeException ex) {
+            throw ex;
+        } finally {
+            session.close();
+        }
+        return produtos;
+    }
+
+    @Override
+    public List<Produto> listarProdutoDisponivel() {
+        Session session = this.sessionFactory.openSession();
+        List<Produto> produtos = null;
+        
+        try {
+            Query consulta = session.createQuery("SELECT produto FROM Produto produto WHERE produto.statusProduto = TRUE");
             produtos = consulta.list();
         } catch(RuntimeException ex) {
             throw ex;

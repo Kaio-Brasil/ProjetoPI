@@ -26,7 +26,8 @@
                     <p:separator />
                     
                     <p:dataTable id="tableProduto" value="#{produtoBean.listarAction()}"
-                                 var="item" rowKey="#{item.codigoProduto}" paginator="true" rows="10" selectionMode="single">
+                                 var="item" rowKey="#{item.codigoProduto}" paginator="true" rows="10"
+                                 paginatorPosition="bottom" selectionMode="single">
                         <p:column headerText="Código" width="8%" style="text-align: center;">
                             #{item.codigoProduto}
                         </p:column>
@@ -124,7 +125,7 @@
                             <p:message for="txtStatus2"/>
                         </p:panelGrid>
                         <p:commandButton value="Alterar" action="#{produtoBean.alterarProdutoAction()}"
-                                         update=":formCadProduto:tableProduto :formMessage:gro" oncomplete="PF('widDialAlteraProduto').hide()">
+                                         update=":formCadProduto:tableProduto :formDialAltera :formMessage:gro" oncomplete="PF('widDialAlteraProduto').hide()">
                             <p:confirm header="Atenção" message="Deseja realmente alterar?" />
                         </p:commandButton>
                     </h:form>

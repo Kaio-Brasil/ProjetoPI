@@ -15,8 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
-@ManagedBean
-@RequestScoped
 public class ItemPedido implements Serializable {
     private Integer codigoItem;
     private Integer quantidade;

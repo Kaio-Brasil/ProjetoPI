@@ -19,7 +19,8 @@
                 <h:form id="formCadMeusPedido" >
                                         
                     <p:dataTable id="tableMeusPedido" value="#{pedidoBean.listarActionPedidoCliente()}"
-                                 var="item" rowKey="#{item.codigoPedido}" paginator="true" rows="5" selectionMode="single">
+                                 var="item" rowKey="#{item.codigoPedido}" paginator="true" rows="5" 
+                                 paginatorPosition="bottom" selectionMode="single">
                         <p:column headerText="Código" width="8%" style="text-align: center;">
                             #{item.codigoPedido}
                         </p:column>

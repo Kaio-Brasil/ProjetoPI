@@ -64,10 +64,7 @@ public class ClienteHibernateDAO implements ClienteDAO<Cliente> {
         Transaction transacao = null;
         try {
             transacao = session.beginTransaction();
-            Cliente alterarCliente = buscar(cliente.getIdCliente());
-            alterarCliente.setNome(cliente.getNome());
-            alterarCliente.setNome(cliente.getEmail());
-            session.update(alterarCliente);
+            session.update(cliente);
             transacao.commit();
         } catch(RuntimeException ex) {
             if(transacao != null) {

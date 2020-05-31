@@ -2,22 +2,16 @@ package com.acai.model.entidade;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="frete")
-@ManagedBean(name="frete")
-@RequestScoped
 public class Frete implements Serializable {
     private Integer codigoFrete;
     private BigDecimal valor;
@@ -51,6 +45,5 @@ public class Frete implements Serializable {
     public void setValor(BigDecimal valor) {
         this.valor = valor;
     }
-    
     
 }

@@ -2,8 +2,6 @@
 package com.acai.model.entidade;
 
 import java.io.Serializable;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,8 +11,6 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
-@ManagedBean(name="usuario")
-@RequestScoped
 public class Usuario implements Serializable {
     private Integer idUsuario;
     private String nome;
