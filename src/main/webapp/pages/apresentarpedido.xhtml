@@ -18,9 +18,9 @@
                 <p:separator />
                 <h:form id="formCadPedido" >
                                         
-                    <p:dataTable id="tableFrete" value="#{pedidoBean.listarActionRevesa()}"
-                                 var="item" rowKey="#{item.codigoPedido}" paginator="true" rows="5" selectionMode="single">
-                        <p:column headerText="Código" width="10%" style="text-align: center;">
+                    <p:dataTable id="tableFrete" value="#{pedidoBean.listarActionRevesa()}" paginatorPosition="bottom"
+                                 var="item" rowKey="#{item.codigoPedido}" paginator="true" rows="9" selectionMode="single">
+                        <p:column headerText="Código" width="8%" style="text-align: center;">
                             #{item.codigoPedido}
                         </p:column>
                         <p:column headerText="Data/Hora" sortBy="true" style="text-align: center;">
@@ -35,7 +35,14 @@
                         <p:column headerText="Valor">
                             R$ #{item.total}
                         </p:column>
-                        <p:column headerText="Operações" width="25%">
+                        <p:column headerText="Status do Pedido" style="text-align: center;">
+                            #{item.status}
+                        </p:column>
+                        <p:column headerText="Operações" width="20%">
+                            <p:commandButton icon="ui-icon-pencil" value="Alterar" oncomplete="PF('widDialAlteraPedido').show()"
+                                             update=":dialAlteraPedido">
+                                <f:setPropertyActionListener value="#{item}" target="#{produtoBean.selectedProduto}"/>
+                            </p:commandButton>
                             <p:commandButton icon="ui-icon-search" value="Visualizar" oncomplete="PF('widDialVisualizaPedido').show()" 
                                              update=":formCadPedido:dialVisualizaPedido">
                                 <f:setPropertyActionListener value="#{item}" target="#{pedidoBean.selectedPedido}"/>
@@ -75,6 +82,9 @@
                             <h:outputText value="Referencia:"/>
                             <h:outputText value="#{pedidoBean.selectedPedido.enderecoEntrega.referencia}"/>
                             
+                            <h:outputText value="Status do Pedido:"/>
+                            <h:outputText value="#{pedidoBean.selectedPedido.status}"/>
+                            
                             <h:outputText value="Taxa da Entrega:"/>
                             <h:outputText value="R$#{pedidoBean.selectedPedido.frete.valor}"/>
                             
@@ -88,14 +98,17 @@
 
                 </h:form>
 
-                <p:dialog id="dialAlteraPedido" visible="false" modal="true" resizable="false"
+                <p:dialog id="dialAlteraPedido" visible="false" modal="true" resizable="false" header="Alterar Status do Pedido"
                           widgetVar="widDialAlteraPedido" appendTo="@(body)">
                     <h:form id="formDialAltera">
                         <p:panelGrid columns="3">
-                            <h:outputText value="Status*:"/>
-                            <p:inputText id="txtStatus" value="#{pedidoBean.selectedPedido.status}" required="true"
-                                         requiredMessage="Tá faltando preenche o campo valor!"/>
-                            <p:message for="txtStatus" />
+                            <h:outputLabel for="selectStatus" value="Status do Pedido: " />
+                            <h:selectOneMenu id="selectStatus" value="#{pedidoBean.selectedPedido.status}" required="true" 
+                                             requiredMessage="Tá faltando preenche o campo valor!">
+                                <f:selectItem itemLabel="Selecionar" itemValue="#{null}" />
+                                <f:selectItems value="#{pedidoBean.statusDoPedido}"  />
+                            </h:selectOneMenu>
+                            <h:message for="selectStatus" />
                         </p:panelGrid>
                         <p:commandButton value="Alterar" action="#{pedidoBean.alterarPedidoAction()}"
                                          update=":formCadPedido :gro" oncomplete="PF('widDialAlteraPedido').hide()">

@@ -29,9 +29,9 @@ public class Pedido implements Serializable {
 
     public Pedido() {this.entrega = new EnderecoEntrega();}
 
-    public Pedido(BigDecimal total, Frete frete, Cliente cliente, EnderecoEntrega entrega) {
+    public Pedido(StatusPedido status, BigDecimal total, Frete frete, Cliente cliente, EnderecoEntrega entrega) {
         this.dataHora = new Date();
-        this.status = StatusPedido.RECEBIDO;
+        this.status = status;
         this.total = total;
         this.frete = frete;
         this.cliente = cliente;

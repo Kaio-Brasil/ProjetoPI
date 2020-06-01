@@ -6,6 +6,7 @@ import com.acai.model.entidade.Frete;
 import com.acai.model.regradenegocio.PedidoRN;
 import com.acai.model.entidade.Produto;
 import com.acai.model.entidade.Pedido;
+import com.acai.model.entidade.StatusPedido;
 import com.acai.model.regradenegocio.EntregaRN;
 import com.acai.model.regradenegocio.FreteRN;
 import com.acai.model.regradenegocio.ItemPedidoRN;
@@ -15,6 +16,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -47,6 +49,7 @@ public class PedidoBean implements Serializable {
         new EntregaRN(EntregaRN.HIBERNATE_ENTREGA_DAO).salvarEntrega(this.cadastrarPedido.getEnderecoEntrega());
         
         this.cadastrarPedido.setCliente(cliente);
+        this.cadastrarPedido.setStatus(StatusPedido.PEDIDO_REALIZADO);
         Integer cod = this.pedidoRN.salvarPedido(cadastrarPedido);
         Pedido codPedido = this.pedidoRN.buscarPedido(cod);
         
@@ -159,6 +162,10 @@ public class PedidoBean implements Serializable {
         this.freteSelecionado = freteSelecionado;
     }
     
+    public EnumSet<StatusPedido> getStatusDoPedido() {
+        return EnumSet.allOf(StatusPedido.class);
+    }
+    
     public void carregarProdutos() {
         ProdutoRN produtoRN = new ProdutoRN(ProdutoRN.HIBERNATE_PRODUTO_DAO);
         this.listaProdutos = produtoRN.listarProdutoDisponivel();
@@ -229,6 +236,7 @@ public class PedidoBean implements Serializable {
     
     public String cancelarPedido() {
         this.cadastrarPedido = null;
+        this.selectedPedido = null;
         return "comofazer.xhtml?faces-redirect=true";
     }
     
